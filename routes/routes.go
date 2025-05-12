@@ -17,5 +17,6 @@ func RegisterRoutes(e *echo.Echo) {
 	e.GET("/evidence-tasks/:id", handlers.GetEvidenceTaskByID)
 	e.GET("/evidence-tasks", handlers.ListEvidenceTasks)
 	e.PUT("/evidence-tasks/:id", handlers.UpdateEvidenceTask)
+	e.GET("/evidence-tasks/summary", handlers.GetEvidenceSummary)
 
 }
