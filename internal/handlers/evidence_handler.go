@@ -6,6 +6,7 @@ import (
 
 	"github.com/Aakarsh-Kamboj/rest-service/db"
 	"github.com/Aakarsh-Kamboj/rest-service/internal/domain"
+	"github.com/Aakarsh-Kamboj/rest-service/internal/services"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
@@ -14,7 +15,7 @@ var evidenceValidate = validator.New()
 
 type CreateEvidenceInput struct {
 	EvidenceName   string    `json:"evidence_name" validate:"required"`
-	Status         string    `json:"status" validate:"required,oneof='Pending' 'In Progress' 'Completed' 'Reviewed'"`
+	Status         string    `json:"status" validate:"required,oneof=Uploaded 'Not Uploaded' 'Needs Attention'"`
 	Assignee       string    `json:"assignee"`
 	Department     string    `json:"department"`
 	DueDate        time.Time `json:"due_date" validate:"required"`
@@ -106,4 +107,8 @@ func UpdateEvidenceTask(c echo.Context) error {
 	})
 
 	return c.JSON(http.StatusOK, evidence)
+}
+
+func GetEvidenceSummary(c echo.Context) error {
+	return services.GetEvidenceSummary(c)
 }
