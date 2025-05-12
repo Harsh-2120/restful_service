@@ -1,9 +1,12 @@
 package services
 
 import (
+	"net/http"
+
 	"github.com/Aakarsh-Kamboj/rest-service/db"
 	"github.com/Aakarsh-Kamboj/rest-service/internal/domain"
 	"github.com/Aakarsh-Kamboj/rest-service/internal/responses"
+	"github.com/labstack/echo/v4"
 )
 
 func GetFrameworkSummaries() ([]responses.FrameworkSummary, error) {
@@ -55,4 +58,29 @@ func GetFrameworkSummaries() ([]responses.FrameworkSummary, error) {
 	}
 
 	return summaries, nil
+}
+
+//Evidence
+
+func GetEvidenceSummary(c echo.Context) error {
+	var tasks []domain.EvidenceTask
+	if err := db.DB.Find(&tasks).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to fetch evidence tasks"})
+	}
+
+	summary := responses.EvidenceSummary{}
+
+	for _, task := range tasks {
+		summary.Total++
+		switch task.Status {
+		case "Uploaded":
+			summary.Uploaded++
+		case "Not Uploaded":
+			summary.NotUploaded++
+		case "Needs Attention":
+			summary.NeedsAttention++
+		}
+	}
+
+	return c.JSON(http.StatusOK, summary)
 }
