@@ -11,4 +11,11 @@ func RegisterRoutes(e *echo.Echo) {
 	e.POST("/frameworks", handlers.CreateFramework)
 	e.POST("/organizations", handlers.CreateOrganization)
 	e.POST("/controls", handlers.CreateControl)
+	e.GET("/controls/:id", handlers.GetControlByID)
+	e.GET("/controls", handlers.ListControls)
+	e.POST("/evidence-tasks", handlers.CreateEvidenceTask)
+	e.GET("/evidence-tasks/:id", handlers.GetEvidenceTaskByID)
+	e.GET("/evidence-tasks", handlers.ListEvidenceTasks)
+	e.PUT("/evidence-tasks/:id", handlers.UpdateEvidenceTask)
+
 }
