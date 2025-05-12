@@ -49,3 +49,23 @@ func CreateControl(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, control)
 }
+
+func GetControlByID(c echo.Context) error {
+	id := c.Param("id")
+
+	var control domain.Control
+	if err := db.DB.Preload("Organization").First(&control, "id = ?", id).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "Control not found"})
+	}
+
+	return c.JSON(http.StatusOK, control)
+}
+
+func ListControls(c echo.Context) error {
+	var controls []domain.Control
+	if err := db.DB.Preload("Organization").Find(&controls).Error; err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to fetch controls"})
+	}
+
+	return c.JSON(http.StatusOK, controls)
+}
