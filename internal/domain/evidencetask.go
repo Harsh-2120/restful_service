@@ -5,7 +5,7 @@ import "time"
 type EvidenceTask struct {
 	ID             string       `gorm:"type:uuid;primaryKey;default:gen_random_uuid()" json:"id"`
 	EvidenceName   string       `gorm:"size:255;not null" json:"evidence_name"`
-	Status         string       `gorm:"type:enum('Pending','In Progress','Completed','Reviewed')" json:"status"`
+	Status         string       `gorm:"type:evidence_status" json:"status"`
 	Assignee       string       `gorm:"size:255" json:"assignee"`
 	Department     string       `gorm:"size:255" json:"department"`
 	DueDate        time.Time    `json:"due_date"`
